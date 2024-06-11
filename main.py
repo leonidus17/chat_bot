@@ -54,7 +54,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                            'game': {'attempt_count': 0, 'otvet': ['*', '*', '*', '*', '*'],
                                                     'guess_word': ' ', 'game_in_progress': False}}
 
-    print(update.effective_chat.id)
 
 
 async def start_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -71,18 +70,15 @@ async def start_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="Хорошо, что вы решили поиграть в нашу игру! Введите слово длиной 5 букв",reply_markup=stop_kb)
 
-    print(update.effective_chat.id)
     main_dict[update.effective_chat.id]['last_command'] = '/start_game'
     main_dict[update.effective_chat.id]['game']['game_in_progress'] = True
     main_dict[update.effective_chat.id]['game']['attempt_count'] += 1
     main_dict[update.effective_chat.id]['game']['guess_word'] = word[randint(0, len(word) - 1)]
     main_dict[update.effective_chat.id]['game']['attempt_count'] = 0
-    print(main_dict[update.effective_chat.id])
+
 
 
 async def igra(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(update.effective_chat.id)
-    print(update.effective_chat.id)
 
     if update.effective_chat.id not in main_dict:
         main_dict[update.effective_chat.id] = {'have_stickers': False, 'last_command': '/start_game',
@@ -102,8 +98,6 @@ async def igra(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f".1e88860b7b677d28.596c4c409f867db83c96cbd6973ffccf2db4e4f7&lang=ru-ru&text={dogadka}")
         b = a.json()
 
-        print(b)
-        print(dogadka)
         if len(dogadka) == 5 and b['def'] != []:
             main_dict[update.effective_chat.id]['game']['attempt_count'] += 1
             otvet_proverka = dogadka
@@ -114,8 +108,6 @@ async def igra(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         dogadka[i] = f'<b><u>{dogadka[i].upper()}</u></b>'
                     else:
                         dogadka[i] = f'<b>{dogadka[i].upper()}</b>'
-            print(otvet_proverka)
-            print(preob(main_dict[update.effective_chat.id]['game']['guess_word']))
             if otvet_proverka == main_dict[update.effective_chat.id]['game']['guess_word']:
                 text_result = 'Поздравляем. Вы прошли игру!!😎\nВот столько попыток у вас ушло на это: ' + \
                               str(main_dict[update.effective_chat.id]['game']['attempt_count'])
@@ -137,7 +129,6 @@ async def igra(update: Update, context: ContextTypes.DEFAULT_TYPE):
                               'слово: ' + str(6 - main_dict[update.effective_chat.id]['game']['attempt_count'])
                 await context.bot.send_message(chat_id=update.effective_chat.id,
                                                text=preob(dogadka) + '\n' + text_result, parse_mode="HTML", reply_markup = main_kb)
-            print(preob(dogadka))
 
 
 
